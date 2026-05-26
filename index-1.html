@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QGS — Quincaillerie Générale Solution | Apix Keur Massar</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--navy:#0d1b2a;--orange:#ff6b35;--orange2:#cc4e1f;--light:#f0f4f8;--white:#fff;--gray:#64748b;--dark:#080f1a;--green:#25D366;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--navy);overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--orange);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(-60px);}to{opacity:1;transform:translateX(0);}}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+@keyframes scanline{0%{top:0;}100%{top:100%;}}
+@keyframes cartBounce{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(100%);}to{opacity:1;transform:translateX(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+.reveal{opacity:0;transform:translateY(50px);transition:all .7s cubic-bezier(.22,1,.36,1);}
+.reveal.on{opacity:1;transform:translateY(0);}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,15,26,.96);backdrop-filter:blur(16px);border-bottom:3px solid var(--orange);}
+.hdr{display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 5%;}
+.logo{display:flex;align-items:center;gap:14px;}
+.logo-badge{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:2px;padding:4px 14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);}
+.logo-txt h1{font-size:.9rem;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;}
+.logo-txt p{font-size:.6rem;color:var(--orange);letter-spacing:2px;text-transform:uppercase;}
+nav{display:flex;align-items:center;gap:24px;}
+nav a{color:#94a3b8;font-size:.75rem;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:.3s;border:none;background:none;}
+nav a:hover{color:var(--orange);}
+.nav-tel{background:var(--orange);color:#fff!important;padding:8px 18px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 100%,8px 100%);font-weight:600!important;}
+
+/* CART BUTTON IN HEADER */
+.cart-btn{
+  position:relative;cursor:pointer;background:none;border:none;
+  display:flex;align-items:center;gap:8px;
+  color:#fff;font-size:.75rem;letter-spacing:1px;
+  padding:8px 16px;border:1px solid rgba(255,107,53,.4);
+  transition:.3s;
+}
+.cart-btn:hover{border-color:var(--orange);color:var(--orange);}
+.cart-count{
+  position:absolute;top:-6px;right:-6px;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--orange);color:#fff;
+  font-size:.65rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  display:none;
+}
+.cart-count.active{display:flex;animation:cartBounce .3s ease;}
+
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.ham span{width:25px;height:2px;background:var(--orange);transition:.3s;}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.ham.open span:nth-child(2){opacity:0;}
+.ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+.mob-menu{display:none;position:fixed;inset:0;top:68px;background:var(--dark);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:28px;}
+.mob-menu.open{display:flex;}
+.mob-menu a{color:#94a3b8;font-size:1.5rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:.3s;}
+.mob-menu a:hover{color:var(--orange);}
+
+/* STATUS */
+.status-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid rgba(255,107,53,.4);font-size:.7rem;letter-spacing:2px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 100%,6px 100%);}
+.dot{width:7px;height:7px;border-radius:50%;}
+.dot.on{background:#22c55e;box-shadow:0 0 8px #22c55e;animation:pulse 2s infinite;}
+.dot.off{background:#ef4444;}
+
+/* HERO */
+#hero{min-height:100vh;display:grid;grid-template-columns:55% 45%;padding-top:68px;}
+.hero-left{background:var(--navy);padding:80px 5% 80px 6%;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.hero-stripe{position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--orange) 0,var(--orange) 20px,transparent 20px,transparent 40px);animation:ticker 1s linear infinite;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.35);color:var(--orange);padding:8px 18px;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;width:fit-content;animation:slideLeft .8s .2s both;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,7vw,5.8rem);line-height:.95;color:#fff;letter-spacing:2px;margin-bottom:12px;animation:slideLeft .8s .3s both;}
+.hero-title span{color:var(--orange);display:block;}
+.hero-sub{font-size:1rem;font-weight:300;color:#94a3b8;line-height:1.8;max-width:420px;margin-bottom:36px;animation:slideLeft .8s .4s both;}
+.hero-sub strong{color:var(--orange);font-weight:600;}
+.hero-btns{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:52px;animation:slideLeft .8s .5s both;}
+.btn-wa{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:#fff;padding:14px 28px;font-size:.82rem;font-weight:600;letter-spacing:1px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);text-decoration:none;transition:.3s;border:none;cursor:pointer;}
+.btn-wa:hover{background:#1da851;transform:translateY(-3px);}
+.btn-map{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--orange);border:2px solid var(--orange);padding:12px 26px;font-size:.82rem;font-weight:600;letter-spacing:1px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);text-decoration:none;transition:.3s;cursor:pointer;}
+.btn-map:hover{background:var(--orange);color:#fff;}
+.hero-stats{display:flex;gap:0;animation:slideLeft .8s .6s both;}
+.stat{padding:18px 26px;border-left:3px solid var(--orange);}
+.stat:first-child{padding-left:0;border-left:none;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:var(--orange);line-height:1;}
+.stat-lbl{font-size:.62rem;letter-spacing:2px;color:#64748b;text-transform:uppercase;margin-top:4px;}
+.hero-right{position:relative;overflow:hidden;}
+.hero-bg{width:100%;height:100%;background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=900&q=80') center/cover no-repeat;background-color:#1a2a1a;filter:brightness(.6);}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--navy) 0%,transparent 30%);}
+.hero-badge{position:absolute;bottom:40px;right:30px;z-index:2;background:var(--orange);width:110px;height:110px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:pulse 3s ease-in-out infinite;box-shadow:0 0 40px rgba(255,107,53,.5);}
+.hero-badge .b1{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;line-height:1;}
+.hero-badge .b2{font-size:.55rem;color:rgba(255,255,255,.8);letter-spacing:1.5px;text-transform:uppercase;}
+
+/* TICKER */
+.ticker{background:var(--orange);padding:11px 0;overflow:hidden;}
+.ticker-wrap{display:flex;width:max-content;animation:ticker 22s linear infinite;}
+.ticker-item{white-space:nowrap;padding:0 36px;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:3px;color:#fff;}
+.sep{color:rgba(255,255,255,.4);}
+
+/* SECTIONS */
+section{padding:80px 5%;}
+.eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.eyebrow-line{width:38px;height:3px;background:var(--orange);}
+.eyebrow-text{font-size:.7rem;letter-spacing:3px;color:var(--orange);text-transform:uppercase;font-weight:600;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,5vw,3.8rem);line-height:.95;letter-spacing:1px;}
+.sec-sub{font-size:.95rem;color:var(--gray);line-height:1.8;font-weight:300;max-width:500px;margin-top:14px;}
+
+/* CATALOGUE + FILTRE */
+#catalogue{background:var(--light);}
+.filter-bar{
+  display:flex;flex-wrap:wrap;gap:10px;margin:40px 0 32px;
+}
+.filter-btn{
+  padding:9px 22px;border:2px solid rgba(255,107,53,.3);
+  background:transparent;color:var(--gray);
+  font-family:'Inter',sans-serif;font-size:.75rem;
+  letter-spacing:1.5px;text-transform:uppercase;font-weight:500;
+  cursor:pointer;transition:.3s;
+  clip-path:polygon(0 0,calc(100% - 6px) 0,100% 100%,6px 100%);
+}
+.filter-btn:hover,.filter-btn.active{
+  background:var(--orange);color:#fff;border-color:var(--orange);
+}
+
+/* GRILLE PRODUITS */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+/* CARTE PRODUIT */
+.product-card{
+  background:var(--white);
+  border:1px solid rgba(255,107,53,.1);
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.product-card:hover{
+  transform:translateY(-10px);
+  border-color:rgba(255,107,53,.4);
+  box-shadow:0 20px 50px rgba(255,107,53,.12);
+}
+.product-img{
+  width:100%;height:200px;
+  background-size:cover!important;
+  background-position:center!important;
+  background-color:#1a2a1a;
+  transition:transform .5s ease;
+  position:relative;
+}
+.product-card:hover .product-img{transform:scale(1.05);}
+.product-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,15,26,.7) 0%,transparent 60%);
+}
+.product-cat-badge{
+  position:absolute;top:12px;left:12px;
+  background:var(--orange);color:#fff;
+  font-size:.58rem;letter-spacing:2px;font-weight:700;
+  padding:3px 10px;text-transform:uppercase;
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 100%,5px 100%);
+}
+.product-body{padding:18px;}
+.product-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.15rem;color:var(--navy);letter-spacing:.5px;margin-bottom:4px;
+  line-height:1.1;
+}
+.product-desc{font-size:.78rem;color:var(--gray);line-height:1.5;margin-bottom:12px;font-weight:300;}
+.product-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;color:var(--orange);letter-spacing:1px;
+}
+.product-unit{font-size:.65rem;color:var(--gray);letter-spacing:1px;margin-bottom:14px;}
+.add-btn{
+  width:100%;padding:11px;
+  background:var(--navy);color:#fff;
+  font-family:'Inter',sans-serif;font-size:.72rem;
+  font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  border:none;cursor:pointer;transition:.3s;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 100%,8px 100%);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.add-btn:hover{background:var(--orange);}
+.add-btn.added{background:var(--green);}
+.add-btn.added::before{content:'✓ ';}
+
+/* PANIER FLOTTANT */
+#cart-panel{
+  position:fixed;top:0;right:0;bottom:0;
+  width:360px;background:var(--dark);
+  z-index:500;
+  transform:translateX(100%);
+  transition:transform .4s cubic-bezier(.22,1,.36,1);
+  display:flex;flex-direction:column;
+  border-left:3px solid var(--orange);
+}
+#cart-panel.open{transform:translateX(0);}
+.cart-header{
+  padding:20px 24px;
+  background:var(--navy);
+  border-bottom:1px solid rgba(255,107,53,.2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cart-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;color:#fff;letter-spacing:2px;
+}
+.cart-close{
+  background:none;border:none;color:#94a3b8;
+  font-size:1.4rem;cursor:pointer;transition:.3s;
+}
+.cart-close:hover{color:var(--orange);}
+.cart-items{flex:1;overflow-y:auto;padding:16px;}
+.cart-items::-webkit-scrollbar{width:2px;}
+.cart-items::-webkit-scrollbar-thumb{background:var(--orange);}
+.cart-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;color:#475569;text-align:center;gap:12px;
+}
+.cart-empty-icon{font-size:3rem;opacity:.4;}
+.cart-empty-text{font-size:.85rem;letter-spacing:1px;}
+.cart-item{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,107,53,.15);
+  padding:14px;margin-bottom:12px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.ci-img{
+  width:60px;height:60px;flex-shrink:0;
+  background-size:cover!important;
+  background-position:center!important;
+  background-color:#1a2a1a;
+}
+.ci-info{flex:1;}
+.ci-name{font-size:.82rem;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.2;}
+.ci-price{font-size:.78rem;color:var(--orange);font-weight:600;}
+.ci-qty{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.qty-btn{
+  width:26px;height:26px;border:1px solid rgba(255,107,53,.3);
+  background:none;color:#fff;font-size:.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.3s;
+}
+.qty-btn:hover{background:var(--orange);border-color:var(--orange);}
+.qty-val{font-size:.82rem;color:#fff;min-width:24px;text-align:center;font-weight:600;}
+.ci-remove{
+  background:none;border:none;color:#475569;
+  cursor:pointer;font-size:1rem;transition:.3s;flex-shrink:0;
+}
+.ci-remove:hover{color:#ef4444;}
+.cart-footer{
+  padding:20px 24px;
+  background:var(--navy);
+  border-top:1px solid rgba(255,107,53,.2);
+}
+.cart-total{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:16px;
+}
+.cart-total-label{font-size:.72rem;letter-spacing:2px;color:#94a3b8;text-transform:uppercase;}
+.cart-total-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;color:var(--orange);
+}
+.cart-note{
+  font-size:.72rem;color:#64748b;
+  font-style:italic;margin-bottom:16px;line-height:1.5;
+}
+.btn-devis{
+  width:100%;padding:16px;
+  background:var(--green);color:#fff;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;
+  border:none;cursor:pointer;transition:.3s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);
+}
+.btn-devis:hover{background:#1da851;}
+.btn-clear{
+  width:100%;padding:10px;margin-top:10px;
+  background:transparent;color:#475569;
+  font-family:'Inter',sans-serif;font-size:.72rem;
+  letter-spacing:1px;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:.3s;
+}
+.btn-clear:hover{border-color:#ef4444;color:#ef4444;}
+
+/* OVERLAY */
+#cart-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  z-index:400;display:none;animation:fadeIn .3s;
+}
+#cart-overlay.open{display:block;}
+
+/* FLOATING CART */
+.float-cart{
+  position:fixed;bottom:100px;right:28px;z-index:99;
+  background:var(--navy);color:#fff;
+  width:58px;height:58px;
+  border:2px solid var(--orange);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:.4s;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);
+  font-size:1.4rem;
+}
+.float-cart:hover{background:var(--orange);}
+.float-cart-count{
+  position:absolute;top:-8px;right:-8px;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--orange);color:#fff;
+  font-size:.65rem;font-weight:700;
+  display:none;align-items:center;justify-content:center;
+}
+.float-cart-count.active{display:flex;}
+
+/* FLOAT WA */
+.float-wa{
+  position:fixed;bottom:28px;right:28px;z-index:99;
+  width:56px;height:56px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);
+  text-decoration:none;transition:.4s;
+  animation:pulse 3s infinite;
+  box-shadow:0 6px 28px rgba(37,211,102,.4);
+}
+.float-wa:hover{transform:scale(1.12) translateY(-4px);}
+.float-wa svg{width:28px;height:28px;fill:#fff;}
+.float-lbl{position:absolute;right:66px;background:var(--navy);color:var(--orange);padding:6px 14px;font-size:.7rem;letter-spacing:1.5px;white-space:nowrap;border:1px solid rgba(255,107,53,.3);clip-path:polygon(0 0,calc(100% - 5px) 0,100% 100%,5px 100%);opacity:0;transition:.3s;pointer-events:none;}
+.float-wa:hover .float-lbl{opacity:1;}
+
+/* SERVICES */
+#services{background:var(--white);}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:52px;}
+.svc-card{overflow:hidden;border-bottom:4px solid var(--orange);transition:.4s;}
+.svc-card:hover{transform:translateY(-12px);box-shadow:0 20px 50px rgba(0,0,0,.1);}
+.svc-img{height:180px;background-size:cover!important;background-position:center!important;background-color:#1a2a1a;}
+.svc-body{padding:24px;background:var(--light);}
+.svc-icon{font-size:2rem;margin-bottom:10px;}
+.svc-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--navy);letter-spacing:1px;margin-bottom:8px;}
+.svc-desc{font-size:.85rem;color:var(--gray);line-height:1.65;font-weight:300;}
+
+/* HORAIRES */
+#horaires{background:var(--navy);padding:70px 5%;position:relative;overflow:hidden;}
+#horaires::before{content:'HORAIRES';position:absolute;right:-60px;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:10rem;color:rgba(255,255,255,.03);letter-spacing:10px;white-space:nowrap;}
+.h-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:40px;}
+.h-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,107,53,.15);padding:30px 20px;text-align:center;transition:.3s;}
+.h-card:hover,.h-card.active{background:rgba(255,107,53,.1);border-color:var(--orange);}
+.h-day{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--orange);letter-spacing:2px;}
+.h-time{font-size:1.1rem;font-weight:700;color:#fff;margin:8px 0;}
+.h-note{font-size:.65rem;color:#475569;letter-spacing:1px;text-transform:uppercase;}
+
+/* CONTACT */
+#contact{background:var(--light);}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:44px;margin-top:52px;}
+.info-list{display:flex;flex-direction:column;gap:14px;}
+.info-card{display:flex;align-items:flex-start;gap:16px;padding:22px;background:var(--white);border-bottom:3px solid transparent;transition:.3s;}
+.info-card:hover{border-color:var(--orange);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.07);}
+.info-icon{width:44px;height:44px;flex-shrink:0;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.2rem;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 100%,7px 100%);}
+.info-content h4{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--orange);font-weight:700;margin-bottom:6px;}
+.info-content p,.info-content a{font-size:.95rem;color:var(--navy);font-weight:500;text-decoration:none;line-height:1.6;}
+.info-content a:hover{color:var(--orange);}
+.map-mock{background:var(--navy);height:210px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;margin-top:14px;}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,53,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,53,.05) 1px,transparent 1px);background-size:40px 40px;}
+.map-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--orange),transparent);animation:scanline 3s linear infinite;}
+.map-pin{font-size:2.4rem;position:relative;animation:float 3s ease-in-out infinite;}
+.map-lbl{font-size:.7rem;letter-spacing:2px;color:var(--orange);text-align:center;position:relative;}
+.btn-maps-full{display:block;text-align:center;padding:15px;background:var(--orange);color:#fff;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:.3s;margin-top:14px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);}
+.btn-maps-full:hover{background:var(--orange2);}
+.contact-form{background:var(--white);padding:38px;border-top:4px solid var(--orange);}
+.contact-form h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--navy);letter-spacing:1px;margin-bottom:26px;}
+.fg{margin-bottom:16px;}
+.fg input,.fg textarea{width:100%;padding:13px 16px;border:2px solid #e2e8f0;font-family:'Inter',sans-serif;font-size:.9rem;color:var(--navy);outline:none;transition:.3s;resize:none;}
+.fg input:focus,.fg textarea:focus{border-color:var(--orange);}
+.btn-submit{width:100%;padding:15px;background:var(--navy);color:#fff;font-weight:700;font-size:.83rem;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;transition:.3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);}
+.btn-submit:hover{background:var(--orange);}
+.btn-wa-form{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px;background:var(--green);color:#fff;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:.3s;margin-top:10px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 100%,10px 100%);}
+.btn-wa-form:hover{background:#1da851;}
+
+/* FOOTER */
+footer{background:var(--dark);padding:58px 5% 28px;border-top:4px solid var(--orange);}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:38px;margin-bottom:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.06);}
+.footer-brand .logo-badge{display:inline-block;margin-bottom:10px;}
+.footer-desc{font-size:.85rem;color:#475569;line-height:1.8;margin-top:8px;}
+.footer-head{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--orange);letter-spacing:2px;margin-bottom:14px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links a,.footer-links button{font-size:.85rem;color:#475569;text-decoration:none;border:none;background:none;cursor:pointer;text-align:left;transition:.3s;font-family:'Inter',sans-serif;}
+.footer-links a:hover,.footer-links button:hover{color:var(--orange);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;}
+.footer-copy,.footer-sig{font-size:.78rem;color:#334155;}
+.footer-sig span{color:var(--orange);font-weight:700;letter-spacing:2px;}
+
+/* RESPONSIVE */
+@media(max-width:1200px){.products-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:1024px){
+  #hero{grid-template-columns:1fr;}.hero-right{height:300px;}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+  .svc-grid{grid-template-columns:1fr;}.h-grid{grid-template-columns:1fr 1fr;}
+  .contact-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;}
+  #cart-panel{width:100%;border-left:none;border-top:3px solid var(--orange);}
+}
+@media(max-width:768px){
+  nav{display:none;}.ham{display:flex;}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+  .h-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:10px;text-align:center;}
+}
+@media(max-width:480px){.products-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- PANIER PANEL -->
+<div id="cart-overlay" onclick="closeCart()"></div>
+<div id="cart-panel">
+  <div class="cart-header">
+    <div class="cart-title">🛒 Mon Devis</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🛒</div>
+      <div class="cart-empty-text">Votre panier est vide<br/>Sélectionnez des produits</div>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <div class="cart-total-label">Total estimé</div>
+      <div class="cart-total-val" id="cartTotal">0 FCFA</div>
+    </div>
+    <div class="cart-note">💡 Ce devis sera envoyé directement sur WhatsApp. Un conseiller vous répondra rapidement.</div>
+    <button class="btn-devis" onclick="sendWhatsApp()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Envoyer le Devis WhatsApp
+    </button>
+    <button class="btn-clear" onclick="clearCart()">Vider le panier</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <div class="logo">
+      <div class="logo-badge">QGS</div>
+      <div class="logo-txt">
+        <h1>Quincaillerie Générale Solution</h1>
+        <p>◆ Keur Massar — Dakar ◆</p>
+      </div>
+    </div>
+    <nav>
+      <a onclick="go('catalogue')">Catalogue</a>
+      <a onclick="go('services')">Services</a>
+      <a onclick="go('horaires')">Horaires</a>
+      <a onclick="go('contact')">Contact</a>
+      <button class="cart-btn" onclick="openCart()">
+        🛒 Mon Devis
+        <span class="cart-count" id="headerCartCount">0</span>
+      </button>
+      <a href="tel:+221772727658" class="nav-tel">📞 77 272 76 58</a>
+    </nav>
+    <div class="ham" id="ham" onclick="togMenu()"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<div class="mob-menu" id="mobMenu">
+  <a onclick="go('catalogue');closeMob()">Catalogue</a>
+  <a onclick="go('services');closeMob()">Services</a>
+  <a onclick="go('horaires');closeMob()">Horaires</a>
+  <a onclick="go('contact');closeMob()">Contact</a>
+  <a onclick="openCart();closeMob()" style="color:var(--orange)">🛒 Mon Devis</a>
+  <a href="tel:+221772727658" style="color:var(--orange)">+221 77 272 76 58</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-stripe"></div>
+    <div id="statusBadge" class="status-badge" style="margin-bottom:22px;"><div class="dot" id="sDot"></div><span id="sTxt"></span></div>
+    <div class="hero-tag">🔧 Construction &amp; Matériaux — Keur Massar</div>
+    <h1 class="hero-title">Tout ce qu'il<span>Faut pour</span>Bâtir</h1>
+    <p class="hero-sub">Quincaillerie professionnelle à Keur Massar. Matériaux, outillage, fixations — en stock permanent. <strong>Commandez en ligne, livraison sur chantier.</strong></p>
+    <div class="hero-btns">
+      <button onclick="go('catalogue')" class="btn-wa" style="text-decoration:none;">
+        🛒 Voir le Catalogue
+      </button>
+      <a href="https://maps.app.goo.gl/mRofTXbNxdi4nh4k9" target="_blank" class="btn-map">📍 Nous Trouver</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" id="c1">0</div><div class="stat-lbl">Ans Expérience</div></div>
+      <div class="stat"><div class="stat-num" id="c2">0</div><div class="stat-lbl">Produits Stock</div></div>
+      <div class="stat"><div class="stat-num" id="c3">0</div><div class="stat-lbl">Clients Fidèles</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-badge"><div class="b1">7J</div><div class="b2">/7</div></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-wrap">
+  <span class="ticker-item">🏗️ Ciment &amp; Béton</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🔨 Outillage Pro</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🚚 Livraison Chantier</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">⚡ Électricité &amp; Plomberie</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🔩 Fixations &amp; Visserie</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🏗️ Ciment &amp; Béton</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🔨 Outillage Pro</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🚚 Livraison Chantier</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">⚡ Électricité &amp; Plomberie</span><span class="ticker-item sep">◆</span>
+  <span class="ticker-item">🔩 Fixations &amp; Visserie</span><span class="ticker-item sep">◆</span>
+</div></div>
+
+<!-- CATALOGUE -->
+<section id="catalogue">
+  <div class="reveal">
+    <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">Sélectionnez vos produits</div></div>
+    <h2 class="sec-title">Notre Catalogue</h2>
+    <p class="sec-sub">Ajoutez les produits à votre panier et recevez votre devis instantanément sur WhatsApp.</p>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="filter-bar reveal">
+    <button class="filter-btn active" onclick="filterProducts('tous',this)">Tous les produits</button>
+    <button class="filter-btn" onclick="filterProducts('sanitaire',this)">🚿 Sanitaire &amp; Bain</button>
+    <button class="filter-btn" onclick="filterProducts('peinture',this)">🎨 Peinture &amp; Étanchéité</button>
+    <button class="filter-btn" onclick="filterProducts('construction',this)">🏗️ Construction</button>
+    <button class="filter-btn" onclick="filterProducts('outillage',this)">🔨 Outillage</button>
+    <button class="filter-btn" onclick="filterProducts('plomberie',this)">⚡ Plomberie &amp; Élec</button>
+    <button class="filter-btn" onclick="filterProducts('fixations',this)">🔩 Fixations</button>
+  </div>
+
+  <!-- GRILLE PRODUITS -->
+  <div class="products-grid reveal" id="productsGrid"></div>
+
+  <!-- BOUTON DEVIS FLOTTANT (mobile) -->
+  <div style="text-align:center;margin-top:40px;">
+    <button onclick="openCart()" class="btn-wa" style="font-size:1rem;padding:18px 40px;">
+      🛒 Voir mon Devis (<span id="cartCountMain">0</span> article<span id="cartPlural"></span>)
+    </button>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">Pourquoi nous choisir</div></div>
+    <h2 class="sec-title">Nos Services</h2>
+  </div>
+  <div class="svc-grid reveal">
+    <div class="svc-card">
+      <div class="svc-img" style="background:url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80') center/cover;"></div>
+      <div class="svc-body"><div class="svc-icon">🚚</div><div class="svc-title">Livraison sur Chantier</div><div class="svc-desc">Livraison rapide et sécurisée directement sur votre chantier ou à domicile dans Keur Massar et environs.</div></div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-img" style="background:url('https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80') center/cover;"></div>
+      <div class="svc-body"><div class="svc-icon">🏗️</div><div class="svc-title">Vente Matériaux</div><div class="svc-desc">Large gamme de matériaux de construction : ciment, briques, sable, carrelage, fer à béton et bien plus.</div></div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-img" style="background:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80') center/cover;"></div>
+      <div class="svc-body"><div class="svc-icon">💬</div><div class="svc-title">Devis Gratuit WhatsApp</div><div class="svc-desc">Sélectionnez vos produits, envoyez votre panier sur WhatsApp et recevez votre devis en quelques minutes.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HORAIRES -->
+<section id="horaires">
+  <div class="reveal">
+    <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text" style="color:var(--orange)">Quand nous trouver</div></div>
+    <h2 class="sec-title" style="color:#fff;">Horaires d'Ouverture</h2>
+  </div>
+  <div class="h-grid reveal">
+    <div class="h-card"><div class="h-day">Lundi</div><div class="h-time">07h30 — 19h30</div><div class="h-note">Ouverture complète</div></div>
+    <div class="h-card"><div class="h-day">Mardi — Jeudi</div><div class="h-time">07h30 — 19h30</div><div class="h-note">Jours ouvrés</div></div>
+    <div class="h-card"><div class="h-day">Vendredi</div><div class="h-time">07h30 — 19h30</div><div class="h-note">Journée complète</div></div>
+    <div class="h-card"><div class="h-day">Samedi</div><div class="h-time">07h30 — 19h30</div><div class="h-note">Journée complète</div></div>
+    <div class="h-card h-status" style="border-color:var(--orange);background:rgba(255,107,53,.08);"><div class="h-day">Dimanche</div><div class="h-time">09h30 — 13h30</div><div class="h-note">Matinée uniquement</div></div>
+  </div>
+  <div class="reveal" style="text-align:center;margin-top:28px;">
+    <div id="statusHoraire" style="font-size:1.1rem;font-weight:600;letter-spacing:2px;"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">Où nous trouver</div></div>
+    <h2 class="sec-title">Nous Contacter</h2>
+  </div>
+  <div class="contact-grid reveal">
+    <div>
+      <div class="info-list">
+        <div class="info-card"><div class="info-icon">📍</div><div class="info-content"><h4>Adresse</h4><p>RP28+V4 — Apix Keur Massar<br/>Dakar, Sénégal</p></div></div>
+        <div class="info-card"><div class="info-icon">📞</div><div class="info-content"><h4>Téléphone &amp; WhatsApp</h4><a href="tel:+221772727658">+221 77 272 76 58</a></div></div>
+        <div class="info-card"><div class="info-icon">🕐</div><div class="info-content"><h4>Horaires</h4><p>Lun – Sam : 07h30 → 19h30<br/>Dimanche : 09h30 → 13h30</p></div></div>
+      </div>
+      <div class="map-mock"><div class="map-grid"></div><div class="map-line"></div><div class="map-pin">📍</div><div class="map-lbl">QGS — RP28+V4 Apix Keur Massar</div></div>
+      <a href="https://maps.app.goo.gl/mRofTXbNxdi4nh4k9" target="_blank" class="btn-maps-full">📍 Ouvrir dans Google Maps</a>
+    </div>
+    <div class="contact-form">
+      <h3>Envoyer un Message</h3>
+      <div class="fg"><input type="text" placeholder="Votre nom"/></div>
+      <div class="fg"><input type="email" placeholder="Votre email"/></div>
+      <div class="fg"><input type="tel" placeholder="+221 77 XXX XX XX"/></div>
+      <div class="fg"><textarea rows="4" placeholder="Votre besoin ou demande de devis..."></textarea></div>
+      <button class="btn-submit" onclick="alert('Message envoyé !\n\nWhatsApp direct : +221 77 272 76 58')">Envoyer →</button>
+      <p style="text-align:center;font-size:.75rem;color:#94a3b8;margin:12px 0 0;">— ou directement sur —</p>
+      <a href="https://wa.me/221772727658?text=Bonjour%20QGS%2C%20je%20voudrais%20un%20devis" target="_blank" class="btn-wa-form">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Commander / Devis WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="logo-badge">QGS</div><p class="footer-desc">Votre quincaillerie de confiance à Keur Massar. Matériaux, outillage et livraison rapide. Commandez en ligne via WhatsApp.</p></div>
+    <div><p class="footer-head">Navigation</p><ul class="footer-links"><li><button onclick="go('catalogue')">Catalogue</button></li><li><button onclick="go('services')">Services</button></li><li><button onclick="go('horaires')">Horaires</button></li><li><button onclick="go('contact')">Contact</button></li></ul></div>
+    <div><p class="footer-head">Horaires</p><ul class="footer-links"><li><a>Lun – Sam : 07h30 – 19h30</a></li><li><a>Dimanche : 09h30 – 13h30</a></li><li id="footerStatus" style="margin-top:6px;"></li></ul></div>
+    <div><p class="footer-head">Contact</p><ul class="footer-links"><li><a href="tel:+221772727658">+221 77 272 76 58</a></li><li><a>RP28+V4 Apix Keur Massar</a></li><li><a>Dakar, Sénégal</a></li><li><a href="https://maps.app.goo.gl/mRofTXbNxdi4nh4k9" target="_blank" style="color:var(--orange)">📍 Google Maps</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p class="footer-copy">© 2025 Quincaillerie Générale Solution (QGS). Tous droits réservés.</p><p class="footer-sig">Conçu par <span>KH-DIGITAL</span></p></div>
+</footer>
+
+<!-- FLOAT CART -->
+<div class="float-cart" onclick="openCart()" title="Mon panier">
+  🛒
+  <div class="float-cart-count" id="floatCartCount">0</div>
+</div>
+
+<!-- FLOAT WA -->
+<a class="float-wa" href="https://wa.me/221772727658?text=Bonjour%20QGS%2C%20je%20voudrais%20un%20devis" target="_blank">
+  <div class="float-lbl">Devis WhatsApp</div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ══════════════════════════════════════════════
+// DONNÉES PRODUITS (À REMPLACER PAR LES VRAIS)
+// ══════════════════════════════════════════════
+const PRODUCTS = [
+  // ═══ PRODUITS RÉELS QGS ═══
+
+  // PEINTURE & REVÊTEMENTS
+  {id:1,
+   name:"Peinture Satinée Lavable Semi-Brillant",
+   desc:"Sublimez vos murs intérieurs avec cette peinture satinée lavable semi-brillante, facile d'entretien et longue durée.",
+   price:40000,unit:"/ bidon",cat:"peinture",
+   img:"https://i.ibb.co/DPPfsKNz/IMG-20260522-WA0009.jpg",
+   imgs:["https://i.ibb.co/DPPfsKNz/IMG-20260522-WA0009.jpg"]},
+
+  {id:2,
+   name:"Bigum Anti-Humidité",
+   desc:"Produit italien à base de ciment pour combattre l'humidité intérieure et extérieure. Efficacité prouvée sur tous supports.",
+   price:45000,unit:"/ sac",cat:"construction",
+   img:"https://i.ibb.co/Tq8b7fLc/IMG-20260522-WA0010.jpg",
+   imgs:["https://i.ibb.co/Tq8b7fLc/IMG-20260522-WA0010.jpg"]},
+
+  {id:3,
+   name:"Peinture Étanchéité Liquide",
+   desc:"Protégez vos toits et façades avec cette peinture étanchéité liquide haute performance. Résistante aux intempéries.",
+   price:40000,unit:"/ bidon",cat:"peinture",
+   img:"https://i.ibb.co/ZpTwgmx1/IMG-20260522-WA0011.jpg",
+   imgs:["https://i.ibb.co/ZpTwgmx1/IMG-20260522-WA0011.jpg"]},
+
+  // SALLE DE BAIN
+  {id:4,
+   name:"Meuble Salle de Bain + Miroir LED",
+   desc:"Ensemble complet meuble salle de bain avec miroir LED intégré. Design moderne, finition premium. Livraison disponible.",
+   price:250000,unit:"/ ensemble",cat:"sanitaire",
+   img:"https://i.ibb.co/hx0d9vzp/IMG-20260522-WA0014.jpg",
+   imgs:[
+     "https://i.ibb.co/hx0d9vzp/IMG-20260522-WA0014.jpg",
+     "https://i.ibb.co/35KGT8Gk/IMG-20260522-WA0015.jpg",
+     "https://i.ibb.co/jktkn2st/IMG-20260522-WA0043.jpg"
+   ]},
+
+  {id:5,
+   name:"Chaise Anglaise + Lavabo Napoly",
+   desc:"Ensemble WC chaise anglaise et lavabo Napoly. Robuste, design épuré, parfait pour vos installations sanitaires.",
+   price:150000,unit:"/ ensemble",cat:"sanitaire",
+   img:"https://i.ibb.co/Jw9RZsSM/IMG-20260522-WA0016.jpg",
+   imgs:[
+     "https://i.ibb.co/Jw9RZsSM/IMG-20260522-WA0016.jpg",
+     "https://i.ibb.co/C5tbf8d2/IMG-20260522-WA0017.jpg"
+   ]},
+
+  // ═══ NOUVEAUX PRODUITS RÉELS (lot 2) ═══
+
+  {id:6,
+   name:"Chauffe-Eau Électrique Instantané",
+   desc:"Chauffe-eau électrique instantané, économique et efficace. Eau chaude immédiate sans attente.",
+   price:55000, unit:"/ pièce", cat:"sanitaire",
+   img:"https://i.ibb.co/JRkmf6gt/IMG-20260523-WA0008.jpg",
+   imgs:["https://i.ibb.co/JRkmf6gt/IMG-20260523-WA0008.jpg"]},
+
+  {id:7,
+   name:"Meuble Lavabo 80cm",
+   desc:"Meuble lavabo 80cm design moderne, robuste et élégant. Parfait pour salle de bain.",
+   price:150000, unit:"/ ensemble", cat:"sanitaire",
+   img:"https://i.ibb.co/0jj28r5x/IMG-20260523-WA0010.jpg",
+   imgs:[
+     "https://i.ibb.co/0jj28r5x/IMG-20260523-WA0010.jpg",
+     "https://i.ibb.co/Rxr3M87/IMG-20260523-WA0009.jpg"
+   ]},
+
+  {id:8,
+   name:"Colonne de Douche Double",
+   desc:"Colonne de douche double avec robinet mitigeur. Design épuré, finition chromée.",
+   price:35000, unit:"/ pièce", cat:"sanitaire",
+   img:"https://i.ibb.co/r2LGsDMW/IMG-20260523-WA0011.jpg",
+   imgs:["https://i.ibb.co/r2LGsDMW/IMG-20260523-WA0011.jpg"]},
+
+  {id:9,
+   name:"Colonne de Douche Noire + Douchette",
+   desc:"Colonne de douche double noire avec robinet mitigeur et douchette. Style industriel tendance.",
+   price:40000, unit:"/ pièce", cat:"sanitaire",
+   img:"https://i.ibb.co/MDSTzFFB/IMG-20260523-WA0012.jpg",
+   imgs:["https://i.ibb.co/MDSTzFFB/IMG-20260523-WA0012.jpg"]},
+
+  {id:10,
+   name:"Peinture Albort Aqua Italienne",
+   desc:"Peinture italienne premium de la marque Albort Aqua. Qualité supérieure, longue durée.",
+   price:75000, unit:"/ bidon", cat:"peinture",
+   img:"https://i.ibb.co/wF3QZ9q8/IMG-20260523-WA0013.jpg",
+   imgs:["https://i.ibb.co/wF3QZ9q8/IMG-20260523-WA0013.jpg"]},
+
+  // ═══ AUTRES PRODUITS (en attente photos client) ═══
+
+  // CONSTRUCTION
+  {id:11,name:"Ciment Portland 50kg",desc:"Ciment haute résistance pour fondations et dalles béton armé.",price:4500,unit:"/ sac",cat:"construction",img:"https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80",imgs:[]},
+  {id:12,name:"Fer à Béton 12mm",desc:"Fer haute adhérence pour armatures, disponible en barres de 12 mètres.",price:8500,unit:"/ barre",cat:"construction",img:"https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400&q=80",imgs:[]},
+  {id:13,name:"Parpaing Creux 20cm",desc:"Bloc béton creux pour murs porteurs et cloisons intérieures.",price:450,unit:"/ unité",cat:"construction",img:"https://images.unsplash.com/photo-1581578724404-5296f8f0b69d?w=400&q=80",imgs:[]},
+  {id:14,name:"Carrelage Sol 60x60",desc:"Carrelage grès cérame pour intérieur et extérieur, antidérapant.",price:12000,unit:"/ m²",cat:"construction",img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",imgs:[]},
+
+  // OUTILLAGE
+  {id:15,name:"Perceuse Électrique 750W",desc:"Perceuse professionnelle avec variateur de vitesse et mandrin auto.",price:45000,unit:"/ pièce",cat:"outillage",img:"https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400&q=80",imgs:[]},
+  {id:16,name:"Meuleuse d'Angle 125mm",desc:"Meuleuse compacte pour couper et poncer métal, pierre et béton.",price:35000,unit:"/ pièce",cat:"outillage",img:"https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=400&q=80",imgs:[]},
+  {id:17,name:"Niveau à Bulle 60cm",desc:"Niveau aluminium 3 bulles pour travaux de maçonnerie et pose.",price:12000,unit:"/ pièce",cat:"outillage",img:"https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80",imgs:[]},
+
+  // PLOMBERIE & ÉLEC
+  {id:18,name:"Tuyau PVC Évacuation 100mm",desc:"Tuyau PVC rigide pour évacuation eaux usées, résistant et durable.",price:8500,unit:"/ barre 6m",cat:"plomberie",img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",imgs:[]},
+  {id:19,name:"Câble Électrique 2.5mm²",desc:"Câble souple pour installations électriques intérieures.",price:15000,unit:"/ rouleau 50m",cat:"plomberie",img:"https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80",imgs:[]},
+  {id:20,name:"Robinet Mélangeur Chromé",desc:"Robinet mélangeur pour lavabo, bec orientable, économie d'eau.",price:18500,unit:"/ pièce",cat:"plomberie",img:"https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80",imgs:[]},
+
+  // FIXATIONS
+  {id:21,name:"Vis Bois 5x60mm (boîte 100)",desc:"Vis à bois tête fraisée, zinguées anti-corrosion.",price:3500,unit:"/ boîte",cat:"fixations",img:"https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=400&q=80",imgs:[]},
+  {id:22,name:"Cheville Nylon 10mm (50 pcs)",desc:"Cheville universelle pour béton, brique et parpaing.",price:2500,unit:"/ boîte",cat:"fixations",img:"https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80",imgs:[]},
+];
+
+// ══════════════════════════════════════════════
+// PANIER
+// ══════════════════════════════════════════════
+let cart = {};
+
+function formatPrice(p){return p.toLocaleString('fr-FR')+' FCFA';}
+
+function addToCart(id){
+  const prod = PRODUCTS.find(p=>p.id===id);
+  if(!prod)return;
+  if(cart[id]){cart[id].qty++;}
+  else{cart[id]={...prod,qty:1};}
+  updateCartUI();
+  // Animate button
+  const btn=document.getElementById('btn-'+id);
+  if(btn){btn.classList.add('added');btn.textContent='Ajouté au devis';setTimeout(()=>{btn.classList.remove('added');btn.innerHTML='+ Ajouter au devis';},1500);}
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  updateCartUI();
+  renderCartItems();
+}
+
+function changeQty(id,delta){
+  if(!cart[id])return;
+  cart[id].qty+=delta;
+  if(cart[id].qty<=0)delete cart[id];
+  updateCartUI();
+  renderCartItems();
+}
+
+function clearCart(){
+  cart={};
+  updateCartUI();
+  renderCartItems();
+}
+
+function updateCartUI(){
+  const total=Object.values(cart).length;
+  const totalItems=Object.values(cart).reduce((s,i)=>s+i.qty,0);
+  const totalPrice=Object.values(cart).reduce((s,i)=>s+i.price*i.qty,0);
+
+  // Header count
+  const hc=document.getElementById('headerCartCount');
+  if(hc){hc.textContent=totalItems;hc.classList.toggle('active',totalItems>0);}
+
+  // Float cart
+  const fc=document.getElementById('floatCartCount');
+  if(fc){fc.textContent=totalItems;fc.classList.toggle('active',totalItems>0);}
+
+  // Main count
+  const mc=document.getElementById('cartCountMain');
+  if(mc) mc.textContent=totalItems;
+  const mp=document.getElementById('cartPlural');
+  if(mp) mp.textContent=totalItems>1?'s':'';
+
+  // Total
+  const tv=document.getElementById('cartTotal');
+  if(tv) tv.textContent=formatPrice(totalPrice);
+}
+
+function renderCartItems(){
+  const container=document.getElementById('cartItems');
+  if(!container)return;
+  const items=Object.values(cart);
+  if(items.length===0){
+    container.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div class="cart-empty-text">Votre panier est vide<br/>Sélectionnez des produits</div></div>';
+    return;
+  }
+  container.innerHTML=items.map(item=>`
+    <div class="cart-item">
+      <div class="ci-img" style="background:url('${item.img}') center/cover;"></div>
+      <div class="ci-info">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-price">${formatPrice(item.price)} ${item.unit}</div>
+        <div class="ci-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+          <span style="font-size:.75rem;color:var(--orange);margin-left:8px;font-weight:600;">${formatPrice(item.price*item.qty)}</span>
+        </div>
+      </div>
+      <button class="ci-remove" onclick="removeFromCart(${item.id})" title="Supprimer">✕</button>
+    </div>
+  `).join('');
+}
+
+function openCart(){
+  renderCartItems();
+  document.getElementById('cart-panel').classList.add('open');
+  document.getElementById('cart-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCart(){
+  document.getElementById('cart-panel').classList.remove('open');
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function sendWhatsApp(){
+  const items=Object.values(cart);
+  if(items.length===0){alert('Votre panier est vide !');return;}
+  const totalPrice=items.reduce((s,i)=>s+i.price*i.qty,0);
+  let msg='Bonjour QGS 👋\n\nJe souhaite un devis pour les produits suivants :\n\n';
+  items.forEach(item=>{
+    msg+=`• ${item.name} x${item.qty} — ${formatPrice(item.price*item.qty)}\n`;
+  });
+  msg+=`\n💰 Total estimé : ${formatPrice(totalPrice)}\n\nMerci de confirmer la disponibilité et les délais de livraison.`;
+  const url='https://wa.me/221772727658?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+}
+
+// ══════════════════════════════════════════════
+// RENDU PRODUITS + FILTRE
+// ══════════════════════════════════════════════
+const catLabels={construction:'🏗️ Construction',outillage:'🔨 Outillage',plomberie:'⚡ Plomberie & Élec',fixations:'🔩 Fixations',peinture:'🎨 Peinture',sanitaire:'🚿 Sanitaire & Bain'};
+
+function renderProducts(filter='tous'){
+  const grid=document.getElementById('productsGrid');
+  if(!grid)return;
+  const filtered=filter==='tous'?PRODUCTS:PRODUCTS.filter(p=>p.cat===filter);
+  grid.innerHTML=filtered.map(p=>{
+    const hasMultiple = p.imgs && p.imgs.length > 1;
+    const thumbs = hasMultiple ? p.imgs.map((img,i)=>`<div onclick="setImg(${p.id},'${img}')" style="width:40px;height:40px;flex-shrink:0;background:url('${img}') center/cover;border:2px solid transparent;cursor:pointer;transition:.2s;" class="thumb-${p.id}" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='transparent'"></div>`).join('') : '';
+    return `
+    <div class="product-card">
+      <div class="product-img" id="pimg-${p.id}" style="background:url('${p.img}') center/cover;">
+        <div class="product-img-overlay"></div>
+        <div class="product-cat-badge">${catLabels[p.cat]||p.cat}</div>
+        ${hasMultiple ? `<div style="position:absolute;top:10px;right:10px;background:var(--orange);color:#fff;font-size:.6rem;padding:3px 8px;letter-spacing:1px;">📷 ${p.imgs.length} PHOTOS</div>` : ''}
+      </div>
+      ${hasMultiple ? `<div style="display:flex;gap:6px;padding:8px;background:#f8f8f8;overflow-x:auto;">${thumbs}</div>` : ''}
+      <div class="product-body">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-price">${formatPrice(p.price)}</div>
+        <div class="product-unit">${p.unit}</div>
+        <button class="add-btn" id="btn-${p.id}" onclick="addToCart(${p.id})">
+          + Ajouter au devis
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setImg(id, url){
+  const el = document.getElementById('pimg-'+id);
+  if(el) el.style.background = `url('${url}') center/cover`;
+}
+
+function filterProducts(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+renderProducts();
+
+// ══════════════════════════════════════════════
+// STATUS
+// ══════════════════════════════════════════════
+function updateStatus(){
+  const n=new Date(),day=n.getDay(),mins=n.getHours()*60+n.getMinutes();
+  const open=(day>=1&&day<=6)?(mins>=450&&mins<1170):(day===0?(mins>=570&&mins<810):false);
+  const dot=document.getElementById('sDot');
+  const txt=document.getElementById('sTxt');
+  const ftr=document.getElementById('footerStatus');
+  const hor=document.getElementById('statusHoraire');
+  if(open){
+    if(dot)dot.className='dot on';
+    if(txt)txt.textContent='Ouvert maintenant';
+    if(ftr)ftr.innerHTML='<span style="color:#22c55e;font-weight:600">✓ Ouvert</span>';
+    if(hor){hor.style.color='#22c55e';hor.textContent='✓ OUVERT MAINTENANT';}
+  } else {
+    if(dot)dot.className='dot off';
+    if(txt)txt.textContent='Actuellement fermé';
+    if(ftr)ftr.innerHTML='<span style="color:#ef4444">Fermé</span>';
+    if(hor){hor.style.color='#ef4444';hor.textContent='ACTUELLEMENT FERMÉ';}
+  }
+}
+updateStatus();setInterval(updateStatus,60000);
+
+// COMPTEURS
+function count(id,target,suffix=''){
+  let cur=0;const el=document.getElementById(id);if(!el)return;
+  const step=Math.max(1,Math.ceil(target/50));
+  const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur+suffix;if(cur>=target)clearInterval(t);},30);
+}
+setTimeout(()=>{count('c1',10,'+');count('c2',500,'+');count('c3',300,'+');},600);
+
+// REVEAL
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// HEADER SCROLL
+window.addEventListener('scroll',()=>{document.querySelector('header').style.boxShadow=window.scrollY>60?'0 4px 28px rgba(0,0,0,.5)':'none';});
+
+// NAV
+function go(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});}
+function togMenu(){document.getElementById('ham').classList.toggle('open');document.getElementById('mobMenu').classList.toggle('open');}
+function closeMob(){document.getElementById('ham').classList.remove('open');document.getElementById('mobMenu').classList.remove('open');}
+</script>
+</body>
+</html>
